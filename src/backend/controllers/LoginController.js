@@ -33,13 +33,14 @@ function signup(req, res) {
   }
 
 function signin (req, res){ 
-    const { email}= req.body; 
+    const { email, password}= req.body; 
     console.log('email value', req.body);
 
   if(email){ 
     User.findOne({
             where : {
-              email: email
+              email: email,
+              password: password
             } 
           }).then(user => {       
                 if (user) {
@@ -71,7 +72,7 @@ function signout(req,res){
 }
 function addTask(req,res){ 
    
-  const {addTask} = req.body
+  const {addTask} = req.body;
   console.log("item value", addTask);  
   console.log('req :',req.body);       //Line3
     if (!(addTask)) {    

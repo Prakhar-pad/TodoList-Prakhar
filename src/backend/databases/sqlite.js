@@ -35,7 +35,7 @@ const User = sequelize.define("user", {
 			  },
 			user_id: {
 				type: Sequelize.INTEGER,
-			},
+			}
 	});
 	sequelize
 	  .sync()

@@ -33,13 +33,13 @@ function signup(req, res) {
   }
 
 function signin (req, res){ 
-    const { email, password}= req.body; 
+    const { email}= req.body; 
+    console.log('email value', req.body);
 
-  if(email && password){ 
+  if(email){ 
     User.findOne({
             where : {
-              email: email,
-              password: password
+              email: email
             } 
           }).then(user => {       
                 if (user) {
@@ -71,14 +71,18 @@ function signout(req,res){
 }
 function addTask(req,res){ 
    
-  const item = req.body;  
-  console.log("hare");       //Line3
-    if (!(item)) {      //Line4
+  const {addTask} = req.body
+  console.log("item value", addTask);  
+  console.log('req :',req.body);       //Line3
+    if (!(addTask)) {    
+     
+    console.log('inside !(addTask)');
       return res.render("profile");
   }
     else { 
+
       List.create({   
-         item,
+         addTask,
          edit: false,
          done: 'false',
          user_id: req.session.userId
@@ -86,11 +90,15 @@ function addTask(req,res){
         .then(list => {       
           if (list) {
             console.log(list);
-            return res.render("profile");
+            return res.render("profile",{
+      msg: 'task added'
+  });
             }
         })
         .catch(err => {
-          return res.render("profile");
+          return res.render("profile", {
+    msg: 'err in adding task'
+  });
         });
     }
 }

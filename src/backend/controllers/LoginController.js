@@ -35,6 +35,7 @@ function signup(req, res) {
 function signin (req, res){ 
     const { email, password}= req.body; 
     console.log('email value', req.body);
+    console.log('email: ', email);
 
   if(email){ 
     User.findOne({
@@ -81,7 +82,7 @@ function addTask(req,res){
       return res.render("profile");
   }
     else { 
-
+    console.log('inside else', addTask);
       List.create({   
          addTask,
          edit: false,
@@ -91,6 +92,7 @@ function addTask(req,res){
         .then(list => {       
           if (list) {
             console.log(list);
+            req.session.userId=user.id;
             return res.render("profile",{
       msg: 'task added'
   });

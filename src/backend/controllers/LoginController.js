@@ -37,7 +37,7 @@ function signin (req, res){
     console.log('email value', req.body);
     console.log('email: ', email);
 
-  if(email){ 
+  if(email && password){ 
     User.findOne({
             where : {
               email: email,

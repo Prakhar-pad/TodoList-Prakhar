@@ -106,6 +106,7 @@ function addTask(req,res){
 function display(req, res, next) {
   
   List.findAll({
+              attributes: [['item', 'item_id']]
             })
     .then((list)=>{
       console.log(list);

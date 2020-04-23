@@ -113,8 +113,6 @@ function display(req, res, next) {
       return res.render('display',{list: list});
   
      })
-
-    
 }
 
 module.exports={

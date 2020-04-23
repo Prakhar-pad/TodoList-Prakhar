@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head> 
+    <meta charset="UTF-8" /> 
+    <title></title>
+  </head>
+  <body>
+    <table>
+        <%
+        if(list.length!=0){
+        var i=1;
+        list.forEach(function(data){
+        %>
+        <tr>
+            <td><%=i; %></td>
+            <td><%=data%></td>
+            <td><a href="/user/edit/<%=data.id%>">Edit</a></td>
+            <td><a href="/user/delete/<%=data.id%>">Delete</a></td>
+        </tr>
+        <%  i++; }) %>
+        <% } else{ %>
+            <tr>
+                <td colspan="7">No Data Found</td>
+            </tr>
+        <% } %>
+        
+        </table>
+  </body>
+</html>

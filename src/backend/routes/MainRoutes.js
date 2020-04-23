@@ -12,6 +12,7 @@ router.route('/signin').post(loginController.signin);
 router.route("/").get(middle.redirectsignin,mainController.profile);
 router.route('/signout').post(loginController.signout);
 router.route('/addTask').post(loginController.addTask);
+router.route('/display').post(loginController.display);
 //router.route("/signin").get(middle.redirectprofile);
 //router.route().get(mainController.redirectSignin);
 //router.route().get(mainController.redirectProfile);

@@ -79,35 +79,47 @@ function addTask(req,res){
     if (!(addTask)) {    
      
     console.log('inside !(addTask)');
-      return res.render("profile");
+      return res.render("profile", {
+    msg: 'err'
+  });
   }
     else { 
     console.log('inside else', addTask);
       List.create({   
-         addTask,
+         item: addTask,
          edit: false,
          done: 'false',
          user_id: req.session.userId
-      })
+      })  
         .then(list => {       
           if (list) {
             console.log(list);
-            req.session.userId=user.id;
-            return res.render("profile",{
-      msg: 'task added'
-  });
-            }
-        })
-        .catch(err => {
-          return res.render("profile", {
-    msg: 'err in adding task'
-  });
-        });
-    }
 }
+})
+  .catch(list=>{
+    return res.render('profile',{msg: 'error in creating user'});
+  });
+    }
+  
+  
+}
+function display(req, res, next) {
+  
+  List.findAll({
+            })
+    .then((list)=>{
+      console.log(list);
+      return res.render('display',{list: list});
+  
+     })
+
+    
+}
+
 module.exports={
     signin: signin,
     signup: signup,
     signout: signout,
-    addTask:addTask
+    addTask:addTask,
+    display: display
 };

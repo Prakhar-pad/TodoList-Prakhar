@@ -5,7 +5,7 @@ const List=dbConnection.List;
 
 function signup(req, res) {
     const { name, email, password } = req.body;         //Line3
-    if (!(name && email && password))                   //Line4
+    if (!(name && email && password))               //Line4
       return res.render("signup", {                     //Line5
         msg: "Please enter all the required details"
       });
@@ -15,22 +15,16 @@ function signup(req, res) {
         email,
         password
       })
-        .then(user => {       
-          if (user) {
-            console.log(user);
-            req.session.userId=user.id;
-            console.log('USER VALUE', req.session.userId);
-            return res.render("profile", {        //Line7
-              msg: "User successfully created",
-              user: user.name
-            });
-          }
-        })
-        .catch(err => {
-          return res.render("profile", { msg: "Error in creating user", user: err });
-        });
+       .then(user => {       
+            if (user) {
+              console.log(user);
     }
+})
+ .catch(user=>{
+   console.log('err');
+ });
   }
+}
 
 function signin (req, res){ 
     const { email, password}= req.body; 
@@ -48,10 +42,15 @@ function signin (req, res){
                   console.log(user);
                   req.session.userId=user.id;
                   console.log('USER VALUE', req.session.userId);
-                  return res.render("profile", {        //Line7
-                    msg: "User successfully created",
-                    user: user.name
-                  });
+                             List.findAll({
+                                        where:{
+                                       user_id: req.session.userId
+                                     }
+                          })
+                  .then((list)=>{
+                    console.log(list);
+                    return res.render('profile',{list: list, msg: 'user signed in'});
+                   })
                 }
               })
               .catch(err => {
@@ -94,8 +93,18 @@ function addTask(req,res){
         .then(list => {       
           if (list) {
             console.log(list);
-}
+  List.findAll({
+            where:{
+              user_id: req.session.userId
+            }
+          })
+  .then((list)=>{
+    console.log(list);
+    return res.render('profile',{list: list, msg: 'user signed in'});
+   })
+  }
 })
+      
   .catch(list=>{
     return res.render('profile',{msg: 'error in creating user'});
   });
@@ -106,13 +115,32 @@ function addTask(req,res){
 function display(req, res, next) {
   
   List.findAll({
-              attributes: [['item', 'item_id']]
+              where:{
+      user_id: req.session.userId
+    }
             })
     .then((list)=>{
       console.log(list);
       return res.render('display',{list: list});
-  
      })
+}
+
+function remove(req, res,id){
+   
+  List.destroy({
+    where:{
+       id: id
+    }
+  })
+  .then(list=>{
+    if(list){
+      return res.render('profile', {list:list});
+    }
+  })
+  .catch(list=>{
+    return res.render('profile',{msg: 'error in deleting'});
+  })
+
 }
 
 module.exports={
@@ -120,5 +148,6 @@ module.exports={
     signup: signup,
     signout: signout,
     addTask:addTask,
-    display: display
+    display: display,
+    remove: remove
 };

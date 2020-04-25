@@ -4,26 +4,72 @@
     <meta charset="UTF-8" /> 
     <title></title>
   </head>
-  <body>
+  <body> 
     <table>
-        <%
-        if(list.length!=0){
-        var i=1;
-        list.forEach(function(data){
-        %>
+    <form method='post' action='/addTask'>
+            <tr>
+             <td><label for="inputTask">Add ToDo</label></td>
+             <td>
+             <input
+             type="text"
+             id="inputTask"
+             name="addTask"
+             placeholder="Add task"
+             required
+             autofocus
+             />
+             </td>
+             </tr>
+             <tr>
+             <td>
+               <button class="btn btn-lg btn-primary btn-block" type="submit">
+                              Add
+                            </button>
+                          </td>
+                        </tr>
+             
+   </form>
+   <form method='post' action='/signout'>
+    <tr>
+        <td>
+            <button class='btn btn-lg btn-primary btn-block' type='submit'>Signout</button>
+        </td>
+    </tr>
+   </form>
+   <form method='post' action='/display'>
+    <tr>
+        <td>
+            <button class='btn btn-lg btn-primary btn-block' type='submit'>Display</button>
+        </td>
+    </tr>
+   </form>
+
+</table>
+ 
+<%=msg%>  
+<table>
+    <%
+    if(list.length!=0){
+    var i=1;
+    list.forEach(function(data){
+    %>
+    <tr>
+        <td><%=i; %></td>
+        <td><%=data.item%></td>
+        <form method='post' action="/edit/id=<%=data.id%>">
+        <td> <button class='btn btn-lg btn-primary btn-block' type='submit'>Edit</button></td>
+        </form>
+        <form method='post' action="/delete/id=<%=data.id%>">
+            <td> <button class='btn btn-lg btn-primary btn-block' type='submit'>Delete</button></td>
+         </form>
+    <%  i++; }) %>
+    <% } else{ %>
         <tr>
-            <td><%=i; %></td>
-            <td><%=data.item%></td>
-            <td><a href="/user/edit/<%=data.id%>">Edit</a></td>
-            <td><a href="/user/delete/<%=data.id%>">Delete</a></td>
+            <td colspan="7">Add todo</td>
         </tr>
-        <%  i++; }) %>
-        <% } else{ %>
-            <tr>
-                <td colspan="7">No Data Found</td>
-            </tr>
-        <% } %>
-        
-        </table>
+    <% } %>
+    
+    </table>
+
   </body>
 </html>

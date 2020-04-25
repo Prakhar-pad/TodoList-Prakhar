@@ -1,6 +1,17 @@
+const db=require('../databases/sqlite');
+const List=db.List
 const redirectprofile = (req, res, next) => {
     if (req.session.userId) {
-      return res.render('profile');
+
+      List.findAll({
+        where:{
+          user_id: req.session.userId
+        }
+      })
+      .then(list=>{
+
+      return res.render('profile', {msg: 'User already signed in', list: list,idTask: null});
+      });
     } else {
       next();
     }

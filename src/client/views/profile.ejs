@@ -46,7 +46,7 @@
 
 </table>
  
-<%= msg%>  
+<%=msg%>   
 <table>
     <%
     if(list.length!=0){
@@ -55,17 +55,26 @@
     %>
     <tr>
         <td><%=i; %></td>
-        <td><%=data.item%></td>
-        <form method='post' action='/edit'>
-        <td> <button class='btn btn-lg btn-primary btn-block' type='submit'>Edit</button></td>
-        </form>
-        <form method='post' action='/delete/id'>
-            <td> <button class='btn btn-lg btn-primary btn-block' type='submit'>Delete</button></td>
-         </form>
+        <% if (data.id == idTask) { %>
+    
+            <form action="/edit/id=<%=data.id%>" method="post">
+                  <td><input type="text" value="<%= data.item %>" name="content"></td>
+                  <td><button type="submit">Confirm</button></td>
+                  <td><a href="/">Cancel</a></td>
+            </form>
+      <% } else { %>
+            <td><%= data.item %></td>
+            <form method='get' action="/edit/id=<%=data.id%>">
+                <td> <button class='btn btn-lg btn-primary btn-block' type='submit'>Edit</button></td>
+                </form>
+                <form method='post' action="/delete/id=<%=data.id%>">
+                    <td> <button class='btn btn-lg btn-primary btn-block' type='submit'>Delete</button></td>
+                 </form>
+      <% } %>
     <%  i++; }) %>
     <% } else{ %>
         <tr>
-            <td colspan="7">No Data Found</td>
+            <td colspan="7">Add todo</td>
         </tr>
     <% } %>
     

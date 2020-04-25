@@ -4,6 +4,8 @@ const User=dbConnection.User;
 const List=dbConnection.List; 
 
 function signup(req, res) {
+  //var list=[];
+  //console.log('length=',list.length)
     const { name, email, password } = req.body;         //Line3
     if (!(name && email && password))               //Line4
       return res.render("signup", {                     //Line5
@@ -15,18 +17,19 @@ function signup(req, res) {
         email,
         password
       })
-       .then(user => {       
-            if (user) {
-              console.log(user);
-    }
-})
- .catch(user=>{
-   console.log('err');
- });
-  }
+    .then(user=>{
+      req.session.userId=user.id;
+      return res.render('profile', {msg: 'user signed up',list: List, idTask: null});
+    })
+  .catch(err=>{
+    return res.render('profile',{msg: 'err in sign up'});
+  })
+     
+ }  
 }
 
 function signin (req, res){ 
+
     const { email, password}= req.body; 
     console.log('email value', req.body);
     console.log('email: ', email);
@@ -37,9 +40,7 @@ function signin (req, res){
               email: email,
               password: password
             } 
-          }).then(user => {       
-                if (user) {
-                  console.log(user);
+          }).then(user => {      
                   req.session.userId=user.id;
                   console.log('USER VALUE', req.session.userId);
                              List.findAll({
@@ -49,9 +50,9 @@ function signin (req, res){
                           })
                   .then((list)=>{
                     console.log(list);
-                    return res.render('profile',{list: list, msg: 'user signed in'});
+                    return res.render('profile',{list: list, msg: 'user signed in', idTask: null});
                    })
-                }
+         
               })
               .catch(err => {
                 return res.render("profile", { msg: "Error in creating user", user: err });
@@ -91,56 +92,100 @@ function addTask(req,res){
          user_id: req.session.userId
       })  
         .then(list => {       
-          if (list) {
-            console.log(list);
+  console.log('session id =',req.session.userId)
   List.findAll({
             where:{
               user_id: req.session.userId
             }
           })
   .then((list)=>{
-    console.log(list);
-    return res.render('profile',{list: list, msg: 'user signed in'});
+    return res.render('profile',{list: list, msg: 'user signed in', idTask: null});
    })
-  }
-})
+  })
       
-  .catch(list=>{
-    return res.render('profile',{msg: 'error in creating user'});
-  });
-    }
-  
-  
+  .catch(err=>{
+    return res.render('profile',{msg: 'error in creating user', list:list});
+    });
 }
-function display(req, res, next) {
-  
-  List.findAll({
-              where:{
-      user_id: req.session.userId
+}
+
+function remove(req, res){
+
+  var id=req.param('id');
+  console.log('value of id=', id);
+
+  List.destroy({
+    where:{
+      id: id
     }
+  })
+  .then(list => {       
+            if (list) {
+              console.log(list);
+    List.findAll({
+              where:{
+                user_id: req.session.userId
+              }
             })
     .then((list)=>{
       console.log(list);
-      return res.render('display',{list: list});
+      return res.render('profile',{list: list, msg: 'task deleted', idTask: null});
      })
+    }
+  })
+        
+    .catch(err=>{
+      return res.render('profile',{msg: 'error in deleting task'});
+    });
 }
 
-function remove(req, res,id){
-   
-  List.destroy({
-    where:{
-       id: id
-    }
-  })
-  .then(list=>{
-    if(list){
-      return res.render('profile', {list:list});
-    }
-  })
-  .catch(list=>{
-    return res.render('profile',{msg: 'error in deleting'});
-  })
+function editGet(req, res){
 
+  var id=req.param('id');
+
+  List.findAll({
+              where:{
+                user_id: req.session.userId
+              }
+            })
+    .then((list)=>{
+      console.log(list);
+      return res.render('profile',{list: list, msg: 'Editing task', idTask: id});
+     })
+        
+    .catch(err=>{
+      return res.render('profile',{msg: 'error in editing'});
+    });
+
+}
+function editPost(req, res){
+
+  var id=req.param('id');
+
+  var {content}=req.body;
+  console.log('value of content=', content);
+
+  List.update({
+   item: content},
+  
+  { where:{
+     id: id
+   }
+  
+  })
+  List.findAll({
+    where:{
+      user_id: req.session.userId
+    }
+        })
+.then((list)=>{
+console.log(list);
+return res.render('profile',{list: list, msg: 'task edited', idTask: null});
+})
+
+.catch(err=>{
+return res.render('profile',{msg: 'error in editing'});
+});
 }
 
 module.exports={
@@ -148,6 +193,8 @@ module.exports={
     signup: signup,
     signout: signout,
     addTask:addTask,
-    display: display,
-    remove: remove
+    remove: remove,
+    editGet: editGet,
+    editPost: editPost
+
 };

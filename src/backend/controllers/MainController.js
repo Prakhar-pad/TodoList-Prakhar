@@ -1,6 +1,6 @@
     const dbConnection=require('../databases/sqlite');
-    const User=dbConnection.User;
-    const List=dbConnection.List;
+    const User=dbConnection.users;
+    const List=dbConnection.lists;
     const session=require('express-session');
     
     function signin(req, res) { 

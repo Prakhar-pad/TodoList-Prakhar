@@ -1,5 +1,5 @@
 const db=require('../databases/sqlite');
-const List=db.List
+const List=db.lists;
 const redirectprofile = (req, res, next) => {
     if (req.session.userId) {
 

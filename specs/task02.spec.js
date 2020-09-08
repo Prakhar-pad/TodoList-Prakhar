@@ -5,7 +5,7 @@ const app = require("../src/backend/databases/sqlite");
 const assert = chai.assert;
 let request = require("supertest");
 
-const f2 = path => {
+const f2 = path => {  
   return new Promise((res, rej) => {
     fs.readFile(path, "utf8", (err, data) => {
       if (err) {

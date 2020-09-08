@@ -6,7 +6,7 @@
   </head>
   <body> 
     <table>
-    <form method='post' action='/addTask'>
+    <form method='post' action='/add'>
             <tr>
              <td><label for="inputTask">Add ToDo</label></td>
              <td>
@@ -36,13 +36,6 @@
         </td>
     </tr>
    </form>
-   <form method='post' action='/display'>
-    <tr>
-        <td>
-            <button class='btn btn-lg btn-primary btn-block' type='submit'>Display</button>
-        </td>
-    </tr>
-   </form>
 
 </table>
  
@@ -69,6 +62,9 @@
                 </form>
                 <form method='post' action="/delete/id=<%=data.id%>">
                     <td> <button class='btn btn-lg btn-primary btn-block' type='submit'>Delete</button></td>
+                 </form>
+                 <form method='post' action="/done/id=<%=data.id%>">
+                    <td> <button class='btn btn-lg btn-primary btn-block' type='submit'>Done</button></td>
                  </form>
       <% } %>
     <%  i++; }) %>

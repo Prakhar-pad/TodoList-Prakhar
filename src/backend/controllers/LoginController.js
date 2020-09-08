@@ -1,16 +1,15 @@
 const dbConnection = require("../databases/sqlite");
 
-const User=dbConnection.User;
-const List=dbConnection.List; 
+const User=dbConnection.users;
+const List=dbConnection.lists; 
 
 function signup(req, res) {
-  //var list=[];
-  //console.log('length=',list.length)
-    const { name, email, password } = req.body;         //Line3
-    if (!(name && email && password))               //Line4
-      return res.render("signup", {                     //Line5
-        msg: "Please enter all the required details"
-      });
+  
+    const { name, email, password } = req.body;   
+    if (!(name && email && password))             
+      return res.render("signup");
+    
+      
     else { 
       User.create({            //Line6
         name,
@@ -19,10 +18,14 @@ function signup(req, res) {
       })
     .then(user=>{
       req.session.userId=user.id;
+      console.log(user);
+      console.log('value of user.id=',req.session.userId );
+
       return res.render('profile', {msg: 'user signed up',list: List, idTask: null});
     })
   .catch(err=>{
-    return res.render('profile',{msg: 'err in sign up'});
+    console.log(err);
+    return res.render('signup');
   })
      
  }  
@@ -55,10 +58,11 @@ function signin (req, res){
          
               })
               .catch(err => {
-                return res.render("profile", { msg: "Error in creating user", user: err });
+          console.log(err)
+                return res.render("signup");
               });
 }
-  //return res.render('signup');
+
 } 
  
 function signout(req,res){
@@ -79,9 +83,7 @@ function addTask(req,res){
     if (!(addTask)) {    
      
     console.log('inside !(addTask)');
-      return res.render("profile", {
-    msg: 'err'
-  });
+      return res.redirect("signup");
   }
     else { 
     console.log('inside else', addTask);
@@ -166,7 +168,9 @@ function editPost(req, res){
   console.log('value of content=', content);
 
   List.update({
-   item: content},
+   item: content,
+   edit: true
+  },
   
   { where:{
      id: id
@@ -188,6 +192,34 @@ return res.render('profile',{msg: 'error in editing'});
 });
 }
 
+function done(req, res){
+ 
+  var id=req.param('id');
+
+  List.update({
+   
+    item: 'Task completed'},
+    {
+      where:{
+         id: id
+      }
+  })
+  List.findAll({
+     
+    where: {
+      user_id: req.session.userId
+    }
+
+  })
+  .then(list=>{
+    return res.render('profile', {msg: 'task completed', list: list, idTask: null})
+  })
+  .catch(err=>{
+    return res.render('profile', {msg: 'error'});
+    })
+
+}
+
 module.exports={
     signin: signin,
     signup: signup,
@@ -195,6 +227,7 @@ module.exports={
     addTask:addTask,
     remove: remove,
     editGet: editGet,
-    editPost: editPost
+    editPost: editPost,
+    done: done
 
 };

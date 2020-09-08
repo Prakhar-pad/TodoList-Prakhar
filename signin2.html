@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <title>
+      Sign in
+    </title>
+  </head>
+  <body class="text-center">
+    <table>
+      <form method="post" action="/signin">
+        <h1>Sign in page</h1>
+        <tr>
+          <td><label for="inputEmail">Email address</label></td>
+          <td>
+            <input
+              type="email"
+              id="inputEmail"
+              name="email"
+              placeholder="Email address"
+              required
+              autofocus
+            />
+          </td>
+        </tr>
+        <tr>
+          <td><label for="inputPassword">Password</label></td>
+          <td>
+            <input
+              type="password"
+              id="inputPassword"
+              name="password"
+              placeholder="Password"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">
+              Sign in
+            </button>
+          </td>
+        </tr>
+      </form>
+         <form method='get' action='/signup'>
+              <tr>
+              <td>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">
+                  Sign up
+                </button>
+              </td>
+            </tr>
+          </form>
+    </table>
+  </body>
+</html>

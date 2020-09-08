@@ -11,10 +11,11 @@ router.route("/signin").get(middle.redirectprofile,mainController.signin);
 router.route('/signin').post(loginController.signin);
 router.route("/").get(middle.redirectsignin,mainController.profile);
 router.route('/signout').post(loginController.signout);
-router.route('/addTask').post(loginController.addTask);
+router.route('/add').post(loginController.addTask);
 router.route('/delete/id=:id').post(loginController.remove);
 router.route('/edit/id=:id').get(loginController.editGet);
 router.route('/edit/id=:id').post(loginController.editPost);
+router.route('/done/id=:id').post(loginController.done);
 
 //router.route("/signin").get(middle.redirectprofile);
 //router.route().get(mainController.redirectSignin);

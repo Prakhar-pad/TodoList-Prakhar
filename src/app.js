@@ -5,11 +5,11 @@ var cookieParser = require("cookie-parser");
 const cors = require('cors');
 const logger = require('morgan'); 
 const compression = require('compression');
-const TWO_HOURS =1000*60*60*2; 
+// TWO_HOURS =1000*60*60*2; 
 
 const{
   PORT=3000,
-  SESS_LIFETIME=TWO_HOURS,
+  //SESS_LIFETIME=TWO_HOURS,
   SESS_NAME='sid',
   SESS_SECRET='ssh/quiet',
 }=process.env
@@ -28,8 +28,8 @@ app.use(session({
   resave:false,
   saveUninitialized:false,
   cookie: {
-    maxAge: SESS_LIFETIME,
-    sameSite:true,
+    //maxAge: SESS_LIFETIME,
+    sameSite:true
   }
 }));
 

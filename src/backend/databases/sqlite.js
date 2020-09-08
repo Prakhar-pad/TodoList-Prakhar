@@ -4,7 +4,7 @@ const sequelize = new Sequelize({
 	  dialect: "sqlite",
 	  storage: "./database.sqlite"
 	});
-const User = sequelize.define("user", {
+const users = sequelize.define("user", {
 	  name: {
 	    type: Sequelize.STRING,
 	    allowNull: false
@@ -19,7 +19,7 @@ const User = sequelize.define("user", {
 	    allowNull: false
 	  }
 	});
-	const List = sequelize.define("list",{
+	const lists = sequelize.define("list",{
 
 		item: {
 			    type: Sequelize.STRING,
@@ -47,7 +47,7 @@ const User = sequelize.define("user", {
 	  .catch(error => console.log("This error occurred"));
 
 	module.exports = {
-		User: User,
-		List: List
+		users: users,
+		lists: lists
     };
 				
